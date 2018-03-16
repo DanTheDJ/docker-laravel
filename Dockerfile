@@ -11,17 +11,26 @@ ENV php_vars /etc/php7/conf.d/docker-vars.ini
 RUN apk update
 
 #Install Main Dependencies
-RUN apk add bash supervisor nginx php7 php7-fpm php7-opcache
+RUN apk add bash supervisor nginx php7 php7-fpm php7-opcache curl git nodejs
 
 #Install PHP Packages
-RUN apk add php7-gd php7-mysqli php7-zlib php7-curl
+
+RUN apk add php7-gd php7-mysqli php7-curl php7-json php7-mbstring php7-phar php7-zlib php7-pdo php7-simplexml php7-tokenizer php7-xml php7-xmlwriter php7-session
 
 #Add supervisor config
+RUN rm -Rf conf/supervisor.conf
 ADD conf/supervisord.conf /etc/supervisord.conf
 
 #Add nginx global config
 RUN rm -Rf /etc/nginx/nginx.conf
 ADD conf/nginx.conf /etc/nginx/nginx.conf
+
+#Add custom php config
+RUN rm -Rf /etc/php7/php.ini
+ADD conf/php.ini /etc/php7/php.ini
+
+#Install composer for PHP packages
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Add site config
 RUN mkdir -p /etc/nginx/sites-available/ && \
