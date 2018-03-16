@@ -11,7 +11,7 @@ ENV php_vars /etc/php7/conf.d/docker-vars.ini
 RUN apk update
 
 #Install Main Dependencies
-RUN apk add bash supervisor nginx php7 php7-fpm php7-opcache curl git nodejs
+RUN apk add bash supervisor nginx php7 php7-fpm php7-opcache curl git nodejs libpng-dev autoconf automake build-base
 
 #Install PHP Packages
 
